@@ -8,6 +8,13 @@
 
 1. [Requirements](#1-requirements)
 2. [Setup Flow](#2-setup-flow)
+    * [composer projectの作成](#composer-projectの作成)
+    * [Laradockのclone](#laradockのclone)
+    * [バックエンドのセットアップ](#バックエンドのセットアップ)
+    * [フロントエンドのセットアップ](#フロントエンドのセットアップ)
+    * [Laradockのセットアップ](#laradockのセットアップ)
+    * [docker-syncのセットアップ(macOSのみ)](#docker-syncのセットアップmacosのみ)
+    * [コンテナ化](#コンテナ化)
 3. [References](#3-references)
 
 ## 1. Requirements
@@ -124,6 +131,8 @@ cd laradock
 // ./sync.sh down コンテナを停止する時
 ```
 
+ここまでで、ローカルの開発環境を整えるのは終了です。  
+
 #### コンテナ化
 
 (`TODO` 力技っぽいので、docker-composeなどでスマートにしたい)
@@ -204,4 +213,9 @@ curl 127.0.0.1:8080 // 確認
 
 ## 3. References
 
-* WIP
+* https://readouble.com/laravel/5.4/ja/installation.html
+* http://laradock.io/getting-started/
+* http://qiita.com/niisan-tokyo/items/4e72c6c11c3f9562fe66
+* http://blog.asial.co.jp/1496
+* http://techblog.scouter.co.jp/entry/2017/07/03/082519
+* http://www.dn-web64.com/archives/web/laradock_laravel/
