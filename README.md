@@ -116,8 +116,77 @@ cd laradock
 // ./sync.sh down コンテナを停止する時
 ```
 
-__コンテナを作る__
+__コンテナ化する__  
+(`TODO` 力技っぽいので、docker-composeなどでスマートにしたい)
 
 ```
-WIP
+mkdir docker
+```
+
+php-fpmのコンテナ化の準備
+
+```
+cp -r laradock/php-fpm docker/php
+cd docker/php
+mv Dockerfile-71 Dockerfile // 自分の選んだPHPのバージョンに合わせてください
+ 
+// Dockerfileを編集
+// Dockerfileを実行する場所の関係で、pathの修正をする
+- COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+- COPY ./aerospike.ini /usr/local/etc/php/conf.d/aerospike.ini
+- COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+- ADD ./laravel.ini /usr/local/etc/php/conf.d
+- ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
++ COPY ./docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
++ COPY ./docker/php/aerospike.ini /usr/local/etc/php/conf.d/aerospike.ini
++ COPY ./docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
++ ADD ./docker/php/laravel.ini /usr/local/etc/php/conf.d
++ ADD ./docker/php/laravel.pool.conf /usr/local/etc/php-fpm.d/
+ 
+// laradock/.env で有効化したPHP Extensionsを有効化
+- ARG INSTALL_MYSQLI=false
+- ARG INSTALL_TOKENIZER=false
+- ARG INSTALL_INTL=false
++ ARG INSTALL_MYSQLI=true
++ ARG INSTALL_TOKENIZER=true
++ ARG INSTALL_INTL=true
+ 
+// Final Touch のすぐ後に
++ COPY ./ /var/www/
+```
+
+nginxのコンテナ化の準備
+
+```
+cp -r laradock/nginx docker/web
+cd docker/web
+ 
+// Dockerfileを編集
+// MAINTAINER のすぐ後ろに
++ COPY ./ /var/www/
++ COPY ./docker/web/sites/default.conf /etc/nginx/sites-available/
+ 
+- ADD nginx.conf /etc/nginx
++ ADD ./docker/web/nginx.conf /etc/nginx
+```
+
+ざっくりとbuild scriptを書く
+
+```
+// docker-build.shを新規作成
+#!/bin/sh
+
+cp .env.production .env // 本番環境の.envにする
+cp docker/php/Dockerfile ./ && docker build -t sample/php .
+cp docker/web/Dockerfile ./ && docker build -t sample/web .
+rm Dockerfile
+cp .env.development .env // 開発環境の.envに戻す
+```
+
+手元で動作確認
+
+```
+docker run -d --name sample_php_1 sample/php
+docker run -d --name sample_web_1 --link sample_php_1:php -p 8080:80 sample/web
+curl 127.0.0.1:8080 // 確認
 ```
