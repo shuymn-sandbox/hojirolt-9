@@ -1,28 +1,34 @@
 # Sample Application
 
-第9回hojiroLTでの発表に使用した、Laravel 5.4 + Vue.jsのサンプルWebアプリケーションです。
+第9回hojiroLTでの発表に使用した、`Laravel 5.4 + Vue.js`のサンプルWebアプリケーションです。  
+手順を参考にすることで、簡単かつモダンなWebアプリケーション開発を始めることができます。  
+また、コンテナ化まで行うので、デプロイも簡単になります。
 
-# Requirements
+## 1. Requirements
 
 * `git`
 * `docker`
 * `composer`
 * `npm` or `yarn`
+* `やる気`
 
-# Setup Flow
+## 2. Setup Flow
 
-composer projectの作成
+__composer projectの作成__
+
 ```
 // この場合、sampleというディレクトリの中にファイルが作られます
 composer create-project --prefer-dist laravel/laravel sample
 ```
 
 以降はsampleディレクトリ内での操作です。
+
 ```
 cd sample
 ```
 
-Laradockのclone
+__Laradockのclone__
+
 ```
 // projectをgitで管理する場合
 git init
@@ -31,7 +37,8 @@ git submodule add https://github.com/Laradock/laradock.git
 git clone add https://github.com/Laradock/laradock.git
 ```
 
-バックエンドのセットアップ
+__バックエンドのセットアップ__
+
 ```
 composer update
  
@@ -51,15 +58,17 @@ composer update
 + DB_PASSWORD=sample_passwd
 ```
 
-フロントエンドのセットアップ
+__フロントエンドのセットアップ__
+
 ```
 npm install // デフォルトでVue.jsが入る
 npm run dev // jsとsassのコンパイル
 ```
 
-Laradockのセットアップ  
+__Laradockのセットアップ__  
 MySQLのバージョンは間違えないように気をつけてください。  
-間違えた人へ → [LaradockでMySQLがどうしても立ち上がらない人あつまれー！ - Qiita](http://qiita.com/lala_fell/items/d4bd1340a5cc7dfcfcb4)
+(間違えた人へ → [LaradockでMySQLがどうしても立ち上がらない人あつまれー！ - Qiita](http://qiita.com/lala_fell/items/d4bd1340a5cc7dfcfcb4))
+
 ```
 cd laradock
 cp env-example .env
@@ -83,19 +92,22 @@ cp env-example .env
 + NGINX_HOST_HTTP_PORT=8080
  
 - MYSQL_VERSION=8.0
++ MYSQL_VERSION=5.7
+ 
+// 「バックエンドのセットアップ」で設定したものと合わせてください
 - MYSQL_DATABASE=default
 - MYSQL_USER=default
 - MYSQL_PASSWORD=secret
-+ MYSQL_VERSION=5.7
 + MYSQL_DATABASE=sample_db
 + MYSQL_USER=sample_user
 + MYSQL_PASSWORD=sample_passwd
 
 ```
 
-docker-syncのセットアップ(macOSのみ)  
+__docker-syncのセットアップ(macOSのみ)__  
 詳しくはこちらを参考にしてください。 → [Improove speed on macOS - Laradock Documentation](http://laradock.io/documentation/#improve-speed-on-macos)  
 この設定以降は`docker-compose`ではなく`./sync.sh`でコンテナを起動します。
+
 ```
 cd laradock
 ./sync.sh install // sudo 必要かもしれない
@@ -104,7 +116,8 @@ cd laradock
 // ./sync.sh down コンテナを停止する時
 ```
 
-コンテナを作る
+__コンテナを作る__
+
 ```
 WIP
 ```
