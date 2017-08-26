@@ -2,7 +2,13 @@
 
 第9回hojiroLTでの発表に使用した、`Laravel 5.4 + Vue.js`のサンプルWebアプリケーションです。  
 手順を参考にすることで、簡単かつモダンなWebアプリケーション開発を始めることができます。  
-また、コンテナ化まで行うので、デプロイも簡単になります。
+また、コンテナ化まで行うので、デプロイも簡単になります[要出典]
+
+## 0. Table of Contents
+
+1. [Requirements](#1-requirements)
+2. [Setup Flow](#2-setup-flow)
+3. [References](#3-references)
 
 ## 1. Requirements
 
@@ -14,7 +20,7 @@
 
 ## 2. Setup Flow
 
-__composer projectの作成__
+#### composer projectの作成
 
 ```
 // この場合、sampleというディレクトリの中にファイルが作られます
@@ -27,7 +33,7 @@ composer create-project --prefer-dist laravel/laravel sample
 cd sample
 ```
 
-__Laradockのclone__
+#### Laradockのclone
 
 ```
 // projectをgitで管理する場合
@@ -37,7 +43,7 @@ git submodule add https://github.com/Laradock/laradock.git
 git clone add https://github.com/Laradock/laradock.git
 ```
 
-__バックエンドのセットアップ__
+#### バックエンドのセットアップ
 
 ```
 composer update
@@ -58,14 +64,15 @@ composer update
 + DB_PASSWORD=sample_passwd
 ```
 
-__フロントエンドのセットアップ__
+#### フロントエンドのセットアップ
 
 ```
 npm install // デフォルトでVue.jsが入る
 npm run dev // jsとsassのコンパイル
 ```
 
-__Laradockのセットアップ__  
+#### Laradockのセットアップ
+
 MySQLのバージョンは間違えないように気をつけてください。  
 (間違えた人へ → [LaradockでMySQLがどうしても立ち上がらない人あつまれー！ - Qiita](http://qiita.com/lala_fell/items/d4bd1340a5cc7dfcfcb4))
 
@@ -104,7 +111,8 @@ cp env-example .env
 
 ```
 
-__docker-syncのセットアップ(macOSのみ)__  
+#### docker-syncのセットアップ(macOSのみ)
+
 詳しくはこちらを参考にしてください。 → [Improove speed on macOS - Laradock Documentation](http://laradock.io/documentation/#improve-speed-on-macos)  
 この設定以降は`docker-compose`ではなく`./sync.sh`でコンテナを起動します。
 
@@ -116,14 +124,15 @@ cd laradock
 // ./sync.sh down コンテナを停止する時
 ```
 
-__コンテナ化する__  
+#### コンテナ化
+
 (`TODO` 力技っぽいので、docker-composeなどでスマートにしたい)
 
 ```
 mkdir docker
 ```
 
-php-fpmのコンテナ化の準備
+php-fpmのコンテナ化の準備。
 
 ```
 cp -r laradock/php-fpm docker/php
@@ -155,7 +164,7 @@ mv Dockerfile-71 Dockerfile // 自分の選んだPHPのバージョンに合わ�
 + COPY ./ /var/www/
 ```
 
-nginxのコンテナ化の準備
+nginxのコンテナ化の準備。
 
 ```
 cp -r laradock/nginx docker/web
@@ -170,7 +179,7 @@ cd docker/web
 + ADD ./docker/web/nginx.conf /etc/nginx
 ```
 
-ざっくりとbuild scriptを書く
+ざっくりとbuild scriptを書く。
 
 ```
 // docker-build.shを新規作成
@@ -183,10 +192,16 @@ rm Dockerfile
 cp .env.development .env // 開発環境の.envに戻す
 ```
 
-手元で動作確認
+手元で動作確認。
 
 ```
 docker run -d --name sample_php_1 sample/php
 docker run -d --name sample_web_1 --link sample_php_1:php -p 8080:80 sample/web
 curl 127.0.0.1:8080 // 確認
 ```
+
+以上です。
+
+## 3. References
+
+* WIP
